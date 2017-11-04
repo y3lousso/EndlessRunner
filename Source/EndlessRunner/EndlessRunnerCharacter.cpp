@@ -71,9 +71,6 @@ void AEndlessRunnerCharacter::MoveForward(float Value)
 
 void AEndlessRunnerCharacter::MoveRight(float Value)
 {
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, CanTurnCorner ? TEXT("true") : TEXT("false"));
-	}
 	if (CanTurnCorner == true && Value != 0) {
 		// Turning left
 		if (Value < 0) {
