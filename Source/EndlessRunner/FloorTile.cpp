@@ -15,6 +15,7 @@ AFloorTile::AFloorTile()
 	AttachPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("AttachPoint"));
 	AttachPoint->SetRelativeLocation(FVector(1000.f, 0.f, 0.f));
 	AttachPoint->SetupAttachment(SceneComponent);
+
 }
 
 // Called when the game starts or when spawned

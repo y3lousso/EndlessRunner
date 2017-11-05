@@ -15,6 +15,16 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void AEndlessRunnerGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	for (int i = 0; i < 4; i++) {
+		AddFloorTile();
+	}
 }
 
 // Called every frame
@@ -22,23 +32,35 @@ void AEndlessRunnerGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddFloorTile();
+	
 }
 
 
 void AEndlessRunnerGameMode::AddFloorTile() 
 {
 	// Spawn a floor tile
-	if (floorTile != NULL) {
+	if (BP_FloorTile != NULL) {
 		UWorld* const World = GetWorld();
 		if (World != NULL) {
 			FActorSpawnParameters SpawnParam;
 			SpawnParam.Owner = this;
 			SpawnParam.Instigator = Instigator;
-			AFloorTile* const floorTile2 = World->SpawnActor<AFloorTile>(floorTile, NextSpawnPoint, SpawnParam);
-			UE_LOG(LogTemp, Warning, TEXT("Your message : %s"), *floorTile2->GetName());
+			AFloorTile* const currentFloorTile = World->SpawnActor<AFloorTile>(BP_FloorTile, NextSpawnPoint, SpawnParam);
+			UE_LOG(LogTemp, Warning, TEXT("Your message : %s"), *currentFloorTile->GetName());
 			// Update next spawn transform
-			NextSpawnPoint = floorTile2->GetAttachTransform();
+			NextSpawnPoint = currentFloorTile->GetAttachTransform();
+
+			// Add obstables to floor tile
+			if (BP_Blocker != NULL) {
+				int nbBlocker = FMath::RandRange(0, 2);
+				for (int i = 0; i < nbBlocker; i++) {
+					//Get a random point on the floor tile
+					//FVector randomPoint = *(currentFloorTile->GetRandomPointInBounds());
+					//FTransform blockerTransform = *(new FTransform(randomPoint));
+					World->SpawnActor<ABlocker>(BP_Blocker, NextSpawnPoint, SpawnParam);
+				}
+			}
 		}
 	}	
+	
 }
