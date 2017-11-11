@@ -35,7 +35,7 @@ public:
 	FORCEINLINE struct FTransform GetAttachTransform() const { return AttachPoint->GetComponentTransform() ; }
 
 	/** Returns Random point on the tile **/
-	//FORCEINLINE struct FVector* GetRandomPointInBounds() const { return new FVector(FMath::FRandRange(0, 500), FMath::FRandRange(0, 500), 0);}
+	FORCEINLINE struct FVector GetRandomPointInBounds() const { return this->GetActorLocation() + FVector( FMath::FRandRange(-500, 500), FMath::FRandRange(-500, 500), 0);}
 	
 	
 };

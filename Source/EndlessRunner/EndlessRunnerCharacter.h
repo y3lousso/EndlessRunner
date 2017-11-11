@@ -20,6 +20,10 @@ class AEndlessRunnerCharacter : public ACharacter
 	class UCameraComponent* FollowCamera;
 public:
 	AEndlessRunnerCharacter();
+	
+	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	bool IsDead;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

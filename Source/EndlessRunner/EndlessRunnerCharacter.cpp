@@ -18,6 +18,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	// set our turn rates for input
+	IsDead = false;
 	CanTurnCorner = true;
 	RunningSpeed = 100.f;
 
@@ -52,7 +53,9 @@ void AEndlessRunnerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	MoveForward(RunningSpeed*DeltaTime);
+	if (!IsDead) {
+		MoveForward(RunningSpeed*DeltaTime);
+	}
 }
 
 void AEndlessRunnerCharacter::MoveForward(float Value)

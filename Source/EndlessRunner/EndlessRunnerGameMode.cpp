@@ -55,9 +55,9 @@ void AEndlessRunnerGameMode::AddFloorTile()
 				int nbBlocker = FMath::RandRange(0, 2);
 				for (int i = 0; i < nbBlocker; i++) {
 					//Get a random point on the floor tile
-					//FVector randomPoint = *(currentFloorTile->GetRandomPointInBounds());
-					//FTransform blockerTransform = *(new FTransform(randomPoint));
-					World->SpawnActor<ABlocker>(BP_Blocker, NextSpawnPoint, SpawnParam);
+					FTransform blockerTransform = NextSpawnPoint;
+					blockerTransform.SetLocation(currentFloorTile->GetRandomPointInBounds());
+					World->SpawnActor<ABlocker>(BP_Blocker, blockerTransform, SpawnParam);
 				}
 			}
 		}
