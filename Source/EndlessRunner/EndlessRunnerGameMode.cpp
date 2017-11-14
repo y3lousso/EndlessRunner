@@ -22,8 +22,9 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 void AEndlessRunnerGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	for (int i = 0; i < 4; i++) {
-		AddFloorTile();
+	AddStraightFloorTile(false);
+	for (int i = 0; i < 5; i++) {
+		AddStraightFloorTile(true);
 	}
 }
 
@@ -36,7 +37,7 @@ void AEndlessRunnerGameMode::Tick(float DeltaTime)
 }
 
 
-void AEndlessRunnerGameMode::AddFloorTile() 
+void AEndlessRunnerGameMode::AddStraightFloorTile(bool WithObstacle)
 {
 	// Spawn a floor tile
 	if (BP_FloorTile != NULL) {
@@ -51,13 +52,11 @@ void AEndlessRunnerGameMode::AddFloorTile()
 			NextSpawnPoint = currentFloorTile->GetAttachTransform();
 
 			// Add obstables to floor tile
-			if (BP_Blocker != NULL) {
-				int nbBlocker = FMath::RandRange(0, 2);
+			if (WithObstacle == true && BP_Blocker != NULL) {
+				int nbBlocker = FMath::RandRange(1, 2);
 				for (int i = 0; i < nbBlocker; i++) {
 					//Get a random point on the floor tile
-					FTransform blockerTransform = NextSpawnPoint;
-					blockerTransform.SetLocation(currentFloorTile->GetRandomPointInBounds());
-					World->SpawnActor<ABlocker>(BP_Blocker, blockerTransform, SpawnParam);
+					World->SpawnActor<ABlocker>(BP_Blocker, *(new FTransform(currentFloorTile->GetBlockerBoudingBox())), SpawnParam);
 				}
 			}
 		}

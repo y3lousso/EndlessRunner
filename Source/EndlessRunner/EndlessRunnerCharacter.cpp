@@ -20,7 +20,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	// set our turn rates for input
 	IsDead = false;
 	CanTurnCorner = true;
-	RunningSpeed = 100.f;
+	RunningSpeed = 200.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;

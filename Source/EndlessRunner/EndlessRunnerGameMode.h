@@ -37,7 +37,7 @@ protected:
 
 	/** Called for side to side input */
 	UFUNCTION(BlueprintCallable)
-	void AddFloorTile();
+	void AddStraightFloorTile(bool WithObstacle);
 
 };
 

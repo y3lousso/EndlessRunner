@@ -13,8 +13,13 @@ AFloorTile::AFloorTile()
 	SetRootComponent(SceneComponent);
 
 	AttachPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("AttachPoint"));
-	AttachPoint->SetRelativeLocation(FVector(1000.f, 0.f, 0.f));
 	AttachPoint->SetupAttachment(SceneComponent);
+
+	CoinBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CoinBox"));
+	CoinBox->SetupAttachment(SceneComponent);
+
+	BlockerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BlockerBox"));
+	BlockerBox->SetupAttachment(SceneComponent);
 
 }
 
