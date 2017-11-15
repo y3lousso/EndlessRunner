@@ -23,6 +23,10 @@ public:
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	int GoldCollected;
+
+	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	bool IsDead;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -49,6 +53,7 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+
 
 protected:
 	// APawn interface

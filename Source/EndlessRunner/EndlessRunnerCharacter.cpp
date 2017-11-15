@@ -18,6 +18,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	// set our turn rates for input
+	GoldCollected = 0;
 	IsDead = false;
 	CanTurnCorner = true;
 	RunningSpeed = 200.f;

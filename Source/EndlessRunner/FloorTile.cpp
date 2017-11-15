@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FloorTile.h"
+#include "UObject/ConstructorHelpers.h"
 
 
 // Sets default values
@@ -15,8 +16,8 @@ AFloorTile::AFloorTile()
 	AttachPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("AttachPoint"));
 	AttachPoint->SetupAttachment(SceneComponent);
 
-	CoinBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CoinBox"));
-	CoinBox->SetupAttachment(SceneComponent);
+	GoldItemBox = CreateDefaultSubobject<UBoxComponent>(TEXT("GoldItemBox"));
+	GoldItemBox->SetupAttachment(SceneComponent);
 
 	BlockerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BlockerBox"));
 	BlockerBox->SetupAttachment(SceneComponent);
@@ -37,3 +38,45 @@ void AFloorTile::Tick(float DeltaTime)
 
 }
 
+void AFloorTile::AddBlockersToFloorTile(int nbBlockers) {
+	if (BP_Blocker != NULL) {
+		UWorld* const World = GetWorld();
+		if (World != NULL) {
+			FActorSpawnParameters SpawnParam;
+			SpawnParam.Owner = this;
+			SpawnParam.Instigator = Instigator;
+			for (int i = 0; i < nbBlockers; i++) {
+				//Get a random point on the floor tile
+				ABlocker* const currentBlocker = World->SpawnActor<ABlocker>(BP_Blocker, *(new FTransform(GetRandomPointInBoudingBox(BlockerBox))), SpawnParam);
+				_blockers.Add(currentBlocker);
+			}
+		}
+	}
+}
+
+void AFloorTile::AddGoldItemsToFloorTile(int nbGoldItems) {
+	if (BP_GoldItem != NULL) {
+		UWorld* const World = GetWorld();
+		if (World != NULL) {
+			FActorSpawnParameters SpawnParam;
+			SpawnParam.Owner = this;
+			SpawnParam.Instigator = Instigator;
+			for (int i = 0; i < nbGoldItems; i++) {
+				//Get a random point on the floor tile
+				AGoldItem* const currentGoldItem = World->SpawnActor<AGoldItem>(BP_GoldItem, *(new FTransform(GetRandomPointInBoudingBox(GoldItemBox))), SpawnParam);
+				_goldItems.Add(currentGoldItem);
+			}
+		}
+	}
+}
+
+void AFloorTile::RemoveFloorTile() {
+	//UE_LOG(LogTemp, Warning, TEXT("Your message : %s"), *_blockers->Num());
+	for (int i = 0; i < _blockers.Num(); i++) {
+		_blockers[i]->Destroy();
+	}
+	for (int i = 0; i < _goldItems.Num(); i++) {
+		_goldItems[i]->Destroy();
+	}
+	Destroy();
+}

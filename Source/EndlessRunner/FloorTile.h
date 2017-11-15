@@ -5,8 +5,9 @@
 #include "Engine.h"
 #include "GameFramework/Actor.h"
 #include "Core.h"
+#include "Blocker.h"
+#include "GoldItem.h"
 #include "FloorTile.generated.h"
-
 
 UCLASS()
 class ENDLESSRUNNER_API AFloorTile : public AActor
@@ -27,15 +28,39 @@ class ENDLESSRUNNER_API AFloorTile : public AActor
 
 	/** Coinbox */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FloorTile, meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* CoinBox;
+	class UBoxComponent* GoldItemBox;
+
+	TArray<ABlocker*> _blockers;
+	TArray<AGoldItem*> _goldItems;
 
 public:	
 	// Sets default values for this actor's properties
 	AFloorTile();
 
+	/** The floor tile to spawn */
+	UPROPERTY(EditAnywhere, Category = Others)
+	TSubclassOf<ABlocker> BP_Blocker;
+
+	/** The floor tile to spawn */
+	UPROPERTY(EditAnywhere, Category = Others)
+	TSubclassOf<AGoldItem> BP_GoldItem;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	/** Called for side to side input */
+	UFUNCTION(BlueprintCallable)
+	void AddBlockersToFloorTile(int nbBlockers);
+
+	/** Called for side to side input */
+	UFUNCTION(BlueprintCallable)
+	void AddGoldItemsToFloorTile(int nbGoldItems);
+
+	/** Called for side to side input */
+	UFUNCTION(BlueprintCallable)
+	void RemoveFloorTile();
 
 public:	
 	// Called every frame
@@ -45,18 +70,7 @@ public:
 	FORCEINLINE struct FTransform GetAttachTransform() const { return AttachPoint->GetComponentTransform() ; }
 
 	/** Returns ArrowComponent subobject **/
-	FORCEINLINE struct FVector GetBlockerBoudingBox() const { 
-		FTransform* locatoworld = new FTransform();
-		return FMath::RandPointInBox(BlockerBox->CalcBounds(*locatoworld).GetBox()); }
+	FORCEINLINE struct FVector GetRandomPointInBoudingBox(UBoxComponent* box) const { return FMath::RandPointInBox(box->CalcBounds(GetTransform()).GetBox()); }
 
-	/** Returns ArrowComponent subobject **/
-	FORCEINLINE struct FVector GetCoinBoundingBox() const { 
-		FTransform* locatoworld = new FTransform(); 
-		return  FMath::RandPointInBox(CoinBox->CalcBounds(*locatoworld).GetBox());
-	}
-
-	/** Returns Random point on the tile **/
-	//FORCEINLINE struct FVector GetRandomPointInBounds() const { return this->GetActorLocation() + FVector( FMath::FRandRange(-500, 500), FMath::FRandRange(-500, 500), 0);}
-	
 	
 };

@@ -2,7 +2,7 @@
 
 #include "EndlessRunnerGameMode.h"
 #include "EndlessRunnerCharacter.h"
-#include "UObject/ConstructorHelpers.h"
+
 
 AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 {
@@ -22,9 +22,9 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 void AEndlessRunnerGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	AddStraightFloorTile(false);
+	AddStraightFloorTile(false, false);
 	for (int i = 0; i < 5; i++) {
-		AddStraightFloorTile(true);
+		AddStraightFloorTile(true, true);
 	}
 }
 
@@ -37,7 +37,7 @@ void AEndlessRunnerGameMode::Tick(float DeltaTime)
 }
 
 
-void AEndlessRunnerGameMode::AddStraightFloorTile(bool WithObstacle)
+void AEndlessRunnerGameMode::AddStraightFloorTile(bool WithObstacle, bool WithGold)
 {
 	// Spawn a floor tile
 	if (BP_FloorTile != NULL) {
@@ -47,19 +47,23 @@ void AEndlessRunnerGameMode::AddStraightFloorTile(bool WithObstacle)
 			SpawnParam.Owner = this;
 			SpawnParam.Instigator = Instigator;
 			AFloorTile* const currentFloorTile = World->SpawnActor<AFloorTile>(BP_FloorTile, NextSpawnPoint, SpawnParam);
-			UE_LOG(LogTemp, Warning, TEXT("Your message : %s"), *currentFloorTile->GetName());
 			// Update next spawn transform
 			NextSpawnPoint = currentFloorTile->GetAttachTransform();
 
 			// Add obstables to floor tile
-			if (WithObstacle == true && BP_Blocker != NULL) {
-				int nbBlocker = FMath::RandRange(1, 2);
-				for (int i = 0; i < nbBlocker; i++) {
-					//Get a random point on the floor tile
-					World->SpawnActor<ABlocker>(BP_Blocker, *(new FTransform(currentFloorTile->GetBlockerBoudingBox())), SpawnParam);
-				}
+			if (WithObstacle == true) {
+				int nbBlocker = FMath::RandRange(1, 2);			
+				currentFloorTile->AddBlockersToFloorTile(nbBlocker);								
+			}
+
+			// Add gold to floor tile
+			if (WithObstacle == true) {
+				int nbGold = FMath::RandRange(1, 2);
+				currentFloorTile->AddGoldItemsToFloorTile(nbGold);
 			}
 		}
-	}	
-	
+	}		
 }
+
+
+
