@@ -21,7 +21,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	GoldCollected = 0;
 	IsDead = false;
 	CanTurnCorner = true;
-	RunningSpeed = 200.f;
+	RunningSpeed = 10.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
