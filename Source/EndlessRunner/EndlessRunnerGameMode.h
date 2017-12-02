@@ -18,10 +18,20 @@ public:
 	/** The floor tile to spawn */
 	UPROPERTY(EditAnywhere, Category = FloorTile)
 	FTransform NextSpawnPoint;
+	int straightInARow;
 
 	/** The floor tile to spawn */
 	UPROPERTY(EditAnywhere, Category = FloorTile)
-	TSubclassOf<AFloorTile> BP_FloorTile;
+	TSubclassOf<AFloorTile> BP_FloorTile_Basic;
+	/** The floor tile to spawn */
+	UPROPERTY(EditAnywhere, Category = FloorTile)
+	TSubclassOf<AFloorTile> BP_FloorTile_Up;
+	/** The floor tile to spawn */
+	UPROPERTY(EditAnywhere, Category = FloorTile)
+	TSubclassOf<AFloorTile> BP_FloorTile_Left;
+	/** The floor tile to spawn */
+	UPROPERTY(EditAnywhere, Category = FloorTile)
+	TSubclassOf<AFloorTile> BP_FloorTile_Right;
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,9 +40,11 @@ protected:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	/** Called for side to side input */
 	UFUNCTION(BlueprintCallable)
-	void AddStraightFloorTile(bool WithObstacle, bool WithGold);
+	void AddRandomFloorTile();
+
+	UFUNCTION(BlueprintCallable)
+	void AddFloorTile(TSubclassOf<AFloorTile> tileToSpawn, bool WithObstacle, bool WithGold);
 };
 
 
