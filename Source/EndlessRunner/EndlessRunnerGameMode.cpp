@@ -37,14 +37,19 @@ void AEndlessRunnerGameMode::Tick(float DeltaTime)
 
 void AEndlessRunnerGameMode::AddRandomFloorTile() {
 	int floorType;
-	if (straightInARow >= 6) {
+	if (straightInARow >= 2) {
 		floorType = FMath::RandRange(0, 3);
+		FString TheFloatStr = FString::SanitizeFloat((float)floorType);
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, *TheFloatStr);
+		}
 	}
 	else {
 		floorType = FMath::RandRange(0, 1);
 		straightInARow++;
 	}
-	switch (straightInARow)
+	switch (floorType)
 	{
 	case 0:
 		AddFloorTile(BP_FloorTile_Basic, true, true);
